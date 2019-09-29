@@ -1,6 +1,10 @@
 Sync Jira Tickets to Hatchbuck CRM Deals
 ========================================
 
+[![Build Status](https://travis-ci.com/arska/jira2hatchbuck.svg?branch=master)](https://travis-ci.com/arska/jira2hatchbuck)
+
+## Configuration
+
 Configuration through environment variables (or .env file):
 * JIRA_SERVER=https://example.com/
 * JIRA_USERNAME=myusername
