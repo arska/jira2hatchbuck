@@ -27,6 +27,13 @@ def parse_arguments():
         action="store_true",
         default=False,
     )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        help="set logging to debug",
+        action="store_true",
+        default=False,
+    )
     args_parser = parser.parse_args()
     return args_parser
 
@@ -35,7 +42,10 @@ def main(args):
     """
     main function
     """
-    logging.basicConfig(level=logging.DEBUG, format=LOGFORMAT)
+    if args.verbose:
+        logging.basicConfig(level=logging.DEBUG, format=LOGFORMAT)
+    else:
+        logging.basicConfig(format=LOGFORMAT)
     logging.debug("starting with arguments %s", args)
     # pretty = pprint.PrettyPrinter()
     jira = JIRA(
@@ -78,7 +88,7 @@ def enforce_parent_blocks(jira, project, parent, args):
                 else:
                     # found rogue block link that is not our parent
                     # delete this link and add the link to our parent below
-                    logging.info(
+                    logging.warning(
                         "%s has rogue block link to %s, removing",
                         ticket,
                         link.outwardIssue.key,
@@ -89,14 +99,14 @@ def enforce_parent_blocks(jira, project, parent, args):
                         logging.debug("noop")
             # print(link.raw)
         if not parentfound:
-            logging.info("%s has no block link to %s, adding", ticket, parent)
+            logging.warning("%s has no block link to %s, adding", ticket, parent)
             if not args.noop:
                 jira.create_issue_link("Blocks", ticket, parent)
             else:
                 logging.debug("noop")
 
 
-if __name__ == "_s_main__":
+if __name__ == "__main__":
     # load settings from .env for development
     load_dotenv()
     ARG = parse_arguments()
