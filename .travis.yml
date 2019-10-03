@@ -1,7 +1,15 @@
 language: python
 python:
-  - '3.6'
-
+- '3.6'
 install: pip install tox-travis
 script: tox
-
+notifications:
+  webhooks:
+    urls:
+      secure: fhgXB0MaxS2hAx5WGGC+h1Zk70fA+F/9AZL/9jZ011I3q9SS2Z7hH9tW6UOCbNC7TaqTqkoNW+HcUi66+2+XKj5WX5gQk85GAKRqtCViypxFqvZB8gyo7YpHBR4mX+pH0QxuH8cLiy0lMma99fGFlweCMDyL57XvHYNW53dJl9RZFpzqkku0MkLBfzYsgEFKsW4UzVOa3UJ347aejoRLmk57IkHdseB14eauuliq+qbcaO5U30Vh8GhI3Y85524nnahZ4NoRHxAxq5+tajLEjNHAgvnqjBjEcLblijsH+XoqV0EWINP7pZdg2B8mgoBIX70/vb91PH1fgmkYGz4LLFJLM06agZxYbTXy7GW6YVtUoEw1/U2M66hzTHXJIBluzl1SUNm2MAFrpzKn51nA6k1eiovIQCglG6T6R/fkzqoRC82IdDpsUqjxxA67NlW/xx0r8w85DahMG8SN1Q9grNcrMAoRDbfk1/CvysdFtg9qq7+aBOvVBhpm2L2hldSNeSyifv1ec3oSS1AWBTmi/a8do0fdQ2xAuun96YhA/gWOIhW28ZucuOXXzdeCbqasAaleW4k4pkI4mukFclvzGwG42ppFMPkuFa45qK5tpZDC8oUpOkN0UZdDI3GMCE2clra90Ug8eGCObccGkXaWn8h8v50PFMKHoobQXkt1QqQ=
+    on_success: always
+    on_failure: never
+    on_start: never
+    on_cancel: never
+    on_error: never
+    if: branch = master
