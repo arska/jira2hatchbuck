@@ -47,7 +47,6 @@ def main(args):
     else:
         logging.basicConfig(format=LOGFORMAT)
     logging.debug("starting with arguments %s", args)
-    # pretty = pprint.PrettyPrinter()
     jira = JIRA(
         server=os.environ.get("JIRA_URL", None),
         auth=(
@@ -77,6 +76,7 @@ def enforce_parent_blocks(jira, project, parent, args):
     tickets = jira.search_issues(
         "project={project} AND type = Task".format(project=project)
     )
+    # pretty = pprint.PrettyPrinter()
     for ticket in tickets:
         # pretty.pprint(ticket.raw)
         parentfound = False
@@ -86,6 +86,14 @@ def enforce_parent_blocks(jira, project, parent, args):
                     parentfound = True
                     logging.debug("%s has block link to %s", ticket, parent)
                 else:
+                    if len(jira.worklogs(ticket)) > 0:
+                        logging.warning(
+                            "%s has rogue block link to %s, "
+                            "but there are existing worklogs. ignoring.",
+                            ticket,
+                            link.outwardIssue.key,
+                        )
+                        continue
                     # found rogue block link that is not our parent
                     # delete this link and add the link to our parent below
                     logging.warning(
@@ -99,6 +107,14 @@ def enforce_parent_blocks(jira, project, parent, args):
                         logging.debug("noop")
             # print(link.raw)
         if not parentfound:
+            if len(jira.worklogs(ticket)) > 0:
+                logging.warning(
+                    "%s has no block link to %s, "
+                    "but there are existing worklogs. ignoring.",
+                    ticket,
+                    parent,
+                )
+                continue
             logging.warning("%s has no block link to %s, adding", ticket, parent)
             if not args.noop:
                 jira.create_issue_link("Blocks", ticket, parent)

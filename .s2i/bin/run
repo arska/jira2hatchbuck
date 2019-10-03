@@ -1,3 +1,5 @@
 #!/bin/bash
+date
 python app.py
+date
 sleep 300
