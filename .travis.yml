@@ -12,4 +12,5 @@ notifications:
     on_start: never
     on_cancel: never
     on_error: never
-    if: branch = master
+    on_pull_requests: false
+    #if: branch = master
