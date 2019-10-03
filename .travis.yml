@@ -5,6 +5,7 @@ install: pip install tox-travis
 script: tox
 notifications:
   webhooks:
+    # poor mans continuous deployment using APPUiO.ch generic webhook url
     on_success: always
     on_failure: never
     on_start: never
@@ -13,3 +14,5 @@ notifications:
     if: branch = master
     urls:
       secure: Gv3ProHD/gm6rAaJt7Gv8CkonD+zsoYlv2hs9bJ9RyVrtVNgLpt4q1fzErBuAni7/32A8j19GGT3nsPrVP0ZU5d9/8eKGZ4sL+H/RIDY1SKorNwr6SyI3bdktsE7iA/FYML+sW7Peha15cWs6tv8qhImRe4lW+Bhar8N1yj+iN+bBmsYhyPJP+zvlXj0Is9OuK/9y4DTGgztU7k1ApRwD0JfogqSsQsZ5191TIb0r8WIEN98e50U76DqhvGpTll6mXSCgqpdl3X9VcSOXxVePpBhJo5ACSQraqpFgIi1HlQTqnKD0fLDtdNu2IFAJNEik3hUq1K6G3NeAIpnemICzYZLXq6TU1C5y9+6oim3lNANxJY7487LbXGz7AOvagDoA7n0DVtjVUJBujUJg9gMMDjO3Fy5aI3MjZEi8slTY2foquoVEeeYKZFSmwMX3OQPxLj+kznK44Gljm9+nlqNdAbN97VBTZq/VO7AYrIXyryM9Kv/USVrSTAUnn42ZTu6ltZWpb674nCaf4HtsD63ZWABaeraowTKMLB/WOJpKKvCxcEIbrkClBkB6aLwBOL5e1M4LL7dV+t8iDnyjYOtkvd1xNo5KIuDlE3M6y9ee+H4IVp8WFSeSzqroQS2/d4eSR23chW8ZCakZ75sQk47/qsteNdE7TM5KSyF/f5aGy0=
+      # travis encrypt --pro "https://example.com" --add notifications.webhooks.urls
+
