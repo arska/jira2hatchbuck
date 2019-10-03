@@ -6,3 +6,9 @@ script: tox
 notifications:
   webhooks:
     secure: maOLqny9hHYnaEisSmHWBNwi7PpBA4SrogigjSuS5GtkLuWq7aqupcZiw72IQEB0UY44X4oF6/wjiEWY47z+RPL/ajxESpjwfSQBIScPvhu3x/zXz/eAyToP16pOd3PSXOclC154JaWDC0kjoQ/KDn2jFB067XcK8mnDQeZSL3Tndu2GNhyumgLtdceEqxuwpsJKJZ81TuqCOdHfKKEBq587IJcBCEEs9YvMZ8ABD074E/TLhVHlq4xZFir+HN0wJj5xT5+fjTZjIXnDOYHS2vv01Oqv2TAY8D81fo3yl0VJAGNF1uwyJ29GcWPPCjYfP/8sEo2eScrNU+VK/B46MTR58mODj9+AYk2ZW6oZVEdZNrOm02K5i651IigXxL2/LF2xd24qwGTNiaQ2QWhd10py+buogur0TQ3PaeUANwprVOdqo4ddb4IxSlj2Y717smVLsuTooz+r+HnlOYFsObljMt4qUTRWyQ7aE6Tq1r2rwYta9r8OS7ppi7V4VCmSvC7Pmgw0lDeSl36rKMIK9z5eiIDo2CglkFVg32u6QK619YhzGYos8DwehTxBy5QnsFwDfPTikWlKDJUsNHNXbFtNWut4NsKevMjn9DsbyPgVZ6yzFshtKp75Ae3RR4CubAtbbL2InJhGMvBRaVYJw8tmfurEA7YKkKeo5cDAxMU=
+    on_success: always
+    on_failure: never
+    on_start:   never
+    on_cancel:  never
+    on_error:   never
+    if: branch = master
