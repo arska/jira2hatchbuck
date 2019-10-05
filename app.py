@@ -58,16 +58,16 @@ def main(args):
     for parent in os.environ.get("JIRA_PARENTTICKETS", "").split(","):
         parent = parent.strip()
         project = parent.split("-")[0]
-        enforce_parent_blocks(jira, project, parent, args)
+        enforce_parent_blocks(jira, project, parent, noop=args.noop)
 
 
-def enforce_parent_blocks(jira, project, parent, args):
+def enforce_parent_blocks(jira, project, parent, noop=False):
     """
     enforce all tasks in project have a blocks link to (and only to) parent
     :param jira: jira connection
     :param project: project name
     :param parent: parent issue
-    :param args: arguments that contain noop
+    :param noop: no operation: dry run, don't actually change anything
     :return: None
     """
     logging.debug(
@@ -101,7 +101,7 @@ def enforce_parent_blocks(jira, project, parent, args):
                         ticket,
                         link.outwardIssue.key,
                     )
-                    if not args.noop:
+                    if not noop:
                         jira.delete_issue_link(link.id)
                     else:
                         logging.debug("noop")
@@ -116,7 +116,7 @@ def enforce_parent_blocks(jira, project, parent, args):
                 )
                 continue
             logging.warning("%s has no block link to %s, adding", ticket, parent)
-            if not args.noop:
+            if not noop:
                 jira.create_issue_link("Blocks", ticket, parent)
             else:
                 logging.debug("noop")
