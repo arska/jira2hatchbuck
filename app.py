@@ -6,6 +6,7 @@ import datetime
 import logging
 import os
 
+import sentry_sdk
 from dateutil import parser as dateparser
 from dotenv import load_dotenv
 from jira import JIRA
@@ -161,5 +162,6 @@ def fix_blocks_links_for_ticket(jira, ticket, parent, noop=False):
 if __name__ == "__main__":
     # load settings from .env for development
     load_dotenv()
+    sentry_sdk.init()
     ARG = parse_arguments()
     main(ARG)
