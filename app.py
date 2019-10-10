@@ -222,6 +222,6 @@ def link_emails_to_crm(ticket, noop):
 if __name__ == "__main__":
     # load settings from .env for development
     load_dotenv()
-    sentry_sdk.init()
+    sentry_sdk.init(release=os.environ.get("OPENSHIFT_BUILD_NAME"))
     ARG = parse_arguments()
     main(ARG)
