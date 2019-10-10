@@ -4,12 +4,14 @@ Module to sync jira tasks to Hatchbuck.com CRM Deals
 import argparse
 import datetime
 import logging
+import re
 import os
 
 import sentry_sdk
 from dateutil import parser as dateparser
 from dotenv import load_dotenv
 from jira import JIRA
+from hatchbuck import Hatchbuck
 
 # import pprint
 
@@ -64,27 +66,6 @@ def main(args):
         fix_blocks_links_for_project(jira, project, parent, noop=args.noop)
 
 
-def set_sensible_duedate(ticket, noop=False):
-    """
-    set a duedate if the ticket is unresolved and does not have a duedate
-    :param ticket: the jira.ticket instance
-    :param noop: no-operation: dry run, don't actually change anything
-    :return:
-    """
-    if ticket.fields.resolution is None and ticket.fields.duedate is None:
-        created = dateparser.parse(ticket.fields.created)
-        duedate = created + datetime.timedelta(days=7)
-        logging.warning(
-            "%s has empty duedate, updating to created + 7d = %s",
-            ticket,
-            duedate.isoformat(),
-        )
-        if not noop:
-            ticket.update(duedate=duedate.isoformat())
-        else:
-            logging.debug("noop")
-
-
 def fix_blocks_links_for_project(jira, project, parent, noop=False):
     """
     enforce all tasks in project have a blocks link to (and only to) parent
@@ -105,6 +86,7 @@ def fix_blocks_links_for_project(jira, project, parent, noop=False):
         # pretty.pprint(ticket.raw)
         fix_blocks_links_for_ticket(jira, ticket, parent, noop)
         set_sensible_duedate(ticket, noop)
+        link_emails_to_crm(ticket, noop)
 
 
 def fix_blocks_links_for_ticket(jira, ticket, parent, noop=False):
@@ -157,6 +139,84 @@ def fix_blocks_links_for_ticket(jira, ticket, parent, noop=False):
             jira.create_issue_link("Blocks", ticket, parent)
         else:
             logging.debug("noop")
+
+
+def set_sensible_duedate(ticket, noop=False):
+    """
+    set a duedate if the ticket is unresolved and does not have a duedate
+    :param ticket: the jira.ticket instance
+    :param noop: no-operation: dry run, don't actually change anything
+    :return:
+    """
+    if ticket.fields.resolution is None and ticket.fields.duedate is None:
+        created = dateparser.parse(ticket.fields.created)
+        duedate = created + datetime.timedelta(days=7)
+        logging.warning(
+            "%s has empty duedate, updating to created + 7d = %s",
+            ticket,
+            duedate.isoformat(),
+        )
+        if not noop:
+            ticket.update(duedate=duedate.isoformat())
+        else:
+            logging.debug("noop")
+
+
+def link_emails_to_crm(ticket, noop):
+    """
+    parse ticket description and add CRM link in parentheses after each email address
+    :param ticket: ticket to handle
+    :param noop: no-operation: dry run, don't actually change anything
+    :return: None
+    """
+    if ticket.fields.resolution is not None:
+        # don't handle closed tickets now
+        return
+    if not ticket.fields.description:
+        # if the description is empty there are no emails to parse
+        return
+
+    crm = Hatchbuck(os.environ.get("HATCHBUCK_APIKEY"), noop)
+    # logging.debug(ticket.fields.description)
+
+    def repl(match):
+        """
+        match is a tuple and looks like one of:
+        ('e@example.com', 'e@example.com', '')
+        ('<e@example.com>', 'e@example.com', '')
+        ('<e@example.com> (https://example.com...)',
+            'e@example.com', ' (https://example.com...)')
+        ( full match that will be replaced;
+            pure email only;
+            rest of string with link if present)
+        :param match: tuple
+        :return: email with brackets and link to crm
+        """
+        # logging.debug("%s %s %s", match[0], match[1], match[2])
+        profile = crm.search_email(match[1])
+        if profile is None:
+            # email not found in CRM
+            return match[0]  # don't create contacts at the moment
+            # if ticket.fields.resolution is not None:
+            # ticket closed, don't create contact and don't replace any link
+            #    return match[0]
+            # profile = {'emails': {'address': match[1], 'type': 'Work'}}
+            # if not noop:
+            #    profile = crm.create(profile)
+            # else:
+            #    profile['contactUrl'] = "https://example.com/"
+        return "<" + match[1] + "> (" + profile["contactUrl"] + ")"
+
+    description = re.sub(
+        r"[<]?([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)[>]?"
+        r"( \(https:\/\/app.hatchbuck.com\/\/Contact\/ContactDetail\?eid=[a-zA-Z0-9]+\))?",
+        repl,
+        ticket.fields.description,
+    )
+    if description != ticket.fields.description:
+        logging.warning("%s new description: %s", ticket, description)
+        if not noop:
+            ticket.update(description=description)
 
 
 if __name__ == "__main__":
