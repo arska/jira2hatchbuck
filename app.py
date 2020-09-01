@@ -86,7 +86,7 @@ def fix_blocks_links_for_project(jira, project, parent, noop=False):
         # pretty.pprint(ticket.raw)
         fix_blocks_links_for_ticket(jira, ticket, parent, noop)
         set_sensible_duedate(ticket, noop)
-        link_emails_to_crm(ticket, noop)
+        # link_emails_to_crm(ticket, noop)
 
 
 def fix_blocks_links_for_ticket(jira, ticket, parent, noop=False):
