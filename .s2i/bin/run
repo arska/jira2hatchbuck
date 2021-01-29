@@ -1,5 +1,5 @@
 #!/bin/bash
 date
-python app.py
+(timeout 300 python app.py) || echo "process timeouted"
 date
 sleep 300
