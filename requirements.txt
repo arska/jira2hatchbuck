@@ -10,7 +10,7 @@ cffi==1.12.3              # via cryptography
 chardet==3.0.4            # via requests
 cryptography==3.2         # via oauthlib
 defusedxml==0.6.0         # via jira
-hatchbuck==1.0.20
+hatchbuck==1.0.23
 idna==2.8                 # via requests
 jira==2.0.0
 oauthlib[signedtoken]==3.1.0  # via jira, requests-oauthlib
