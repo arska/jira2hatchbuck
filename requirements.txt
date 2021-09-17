@@ -13,7 +13,7 @@ defusedxml==0.6.0         # via jira
 hatchbuck==1.0.23
 idna==2.8                 # via requests
 jira==2.0.0
-oauthlib[signedtoken]==3.1.0  # via jira, requests-oauthlib
+oauthlib[signedtoken]==3.1.1  # via jira, requests-oauthlib
 pbr==5.4.3                # via jira
 pycountry==19.8.18        # via hatchbuck
 pycparser==2.19           # via cffi
