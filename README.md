@@ -1,7 +1,9 @@
-Sync Jira Tickets to Hatchbuck CRM Deals
-========================================
+Enforce Jira ticket blocks relationship and set sensible default due date
+=========================================================================
 
 [![Build Status](https://travis-ci.com/arska/jira2hatchbuck.svg?branch=master)](https://travis-ci.com/arska/jira2hatchbuck)
+
+Contrary to the project title this project no longer has anything to do with Hatchbuck CRM
 
 ## Configuration
 

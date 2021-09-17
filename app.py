@@ -4,14 +4,13 @@ Module to sync jira tasks to Hatchbuck.com CRM Deals
 import argparse
 import datetime
 import logging
-import re
 import os
+import re
 
 import sentry_sdk
 from dateutil import parser as dateparser
 from dotenv import load_dotenv
 from jira import JIRA
-from hatchbuck import Hatchbuck
 
 # import pprint
 
@@ -54,7 +53,7 @@ def main(args):
     logging.debug("starting with arguments %s", args)
     jira = JIRA(
         server=os.environ.get("JIRA_URL", None),
-        auth=(
+        basic_auth=(
             os.environ.get("JIRA_USERNAME", None),
             os.environ.get("JIRA_PASSWORD", None),
         ),
@@ -162,6 +161,7 @@ def set_sensible_duedate(ticket, noop=False):
             logging.debug("noop")
 
 
+# this code is currently not used
 def link_emails_to_crm(ticket, noop):
     """
     parse ticket description and add CRM link in parentheses after each email address
