@@ -20,7 +20,7 @@ requests==2.27.1          # via jira, requests-oauthlib, requests-toolbelt
 sentry-sdk==1.5.1
 six==1.16.0               # via python-dateutil
 typing-extensions==3.10.0.2  # via importlib-metadata
-urllib3==1.26.7           # via requests, sentry-sdk
+urllib3==1.26.8           # via requests, sentry-sdk
 zipp==3.7.0               # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
