@@ -5,7 +5,7 @@
 #    pip-compile requirements.in
 #
 certifi==2021.10.8        # via requests, sentry-sdk
-charset-normalizer==2.0.12  # via requests
+charset-normalizer==2.1.0  # via requests
 defusedxml==0.7.1         # via jira
 idna==3.3                 # via requests
 importlib-metadata==4.11.4  # via keyring
