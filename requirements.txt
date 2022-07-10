@@ -9,7 +9,7 @@ charset-normalizer==2.1.0  # via requests
 defusedxml==0.7.1         # via jira
 idna==3.3                 # via requests
 importlib-metadata==4.12.0  # via keyring
-jira==3.2.0
+jira==3.3.0
 keyring==23.6.0           # via jira
 oauthlib==3.2.0           # via requests-oauthlib
 python-dateutil==2.8.2
