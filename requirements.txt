@@ -21,7 +21,7 @@ sentry-sdk==1.10.1
 six==1.16.0               # via python-dateutil
 typing-extensions==3.10.0.2  # via importlib-metadata
 urllib3==1.26.12           # via requests, sentry-sdk
-zipp==3.9.0               # via importlib-metadata
+zipp==3.10.0               # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
